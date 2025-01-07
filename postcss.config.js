@@ -1,12 +1,6 @@
-// tailwind.config.js
-module.exports = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
 }
