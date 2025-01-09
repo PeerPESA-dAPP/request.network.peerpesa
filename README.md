@@ -57,8 +57,8 @@ IPFS: Decentralized storage for loan terms and metadata.
 NoSQL (e.g., Firebase) or The Graph for indexing blockchain data.
 Tools and Libraries:
 
-## Material-UI or Chakra UI: Modern, responsive design.
-Redux or React Query: State management.
+## Modern, responsive UI design.
+React Query: State management.
 Chart.js or D3.js: Data visualization.
 Testing and Deployment:
 Hardhat: Smart contract testing and deployment.

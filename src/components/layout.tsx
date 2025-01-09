@@ -4,11 +4,16 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Switch } from 'antd'
 import { useAppContext } from '@/contexts/appContext'
 import { useEffect, useRef, useState } from 'react'
+import { ConnectWebWallet } from './ConnectWebWallet'; // Import the SolanaProvider and ConnectWallet components
 
 const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
+    { name: 'About', href: '/about' },    
+    { name: 'Services', href: '/services' },
+    { name: 'Support', href: '/support' },
+    { name: 'FAQs', href: '/faqs' }
 ]
+
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -17,9 +22,9 @@ function classNames(...classes: string[]) {
 export default function Layout() {
     const { pathname } = useLocation()
     const { isDark, setIsDark } = useAppContext()
-
     const myRef = useRef<HTMLDivElement>(null)
     const [positionScrollY, setPositionScrollY] = useState<number>(0)
+    const [selectedChain, setSelectedChain] = useState<'solana' | 'stellar' | 'celo'>('solana');
 
     useEffect(() => {
         const onScroll = () => {
@@ -121,6 +126,10 @@ export default function Layout() {
                                         defaultChecked
                                         onChange={() => setIsDark(!isDark)}
                                     />
+                                </div>
+
+                                <div className="flex items-center space-x-4 margin-right-30">
+                                  <ConnectWebWallet chain={selectedChain} />
                                 </div>
                             </div>
                         </div>
