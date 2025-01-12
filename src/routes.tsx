@@ -13,6 +13,10 @@ const Home = lazy(async () => await import('@/pages/home'))
 const About = lazy(async () => await import('@/pages/about'))
 const Example = lazy(async () => await import('@/pages/example'))
 
+const Services = lazy(async () => await import('@/pages/services'))
+const Support = lazy(async () => await import('@/pages/support'))
+const Faqs = lazy(async () => await import('@/pages/faqs'))
+
 export const publicRoutes = createBrowserRouter(
     createRoutesFromElements(
         <Route path='/' element={<Layout />}>
@@ -37,6 +41,33 @@ export const publicRoutes = createBrowserRouter(
                 element={
                     <Suspense fallback={<></>}>
                         <Example />
+                    </Suspense>
+                }
+            />
+
+            <Route
+                index
+                element={
+                    <Suspense fallback={<></>}>
+                        <Faqs />
+                    </Suspense>
+                }
+            />
+
+            <Route
+                index
+                element={
+                    <Suspense fallback={<></>}>
+                        <Support />
+                    </Suspense>
+                }
+            />
+
+            <Route
+                index
+                element={
+                    <Suspense fallback={<></>}>
+                        <Services />
                     </Suspense>
                 }
             />

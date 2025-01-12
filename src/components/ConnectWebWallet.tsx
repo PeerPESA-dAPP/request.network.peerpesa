@@ -3,13 +3,19 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { ConnectionProvider, WalletProvider as SolanaWalletProvider, useWallet } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
-//import RequestClient from '@requestnetwork/request-client.js';
-//import { RequestClient } from '@requestnetwork/request-client';
-import RequestClient from '@requestnetwork/request-client';
+import { providers } from "ethers";
 
+// import { SorobanReactProvider } from "@soroban-react/core";
+// import { testnet, sandbox, standalone } from "@soroban-react/chains";
+// import { freighter } from "@soroban-react/freighter";
+// import { ChainMetadata, Connector } from "@soroban-react/types";
+// import type { WalletChain, ChainMetadata, ChainName } from "@soroban-react/types";
+// import { useSorobanReact } from "@soroban-react/core";
 
 import { clusterApiUrl } from '@solana/web3.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Web3SignatureProvider } from "@requestnetwork/web3-signature";
+import { RequestNetwork } from "@requestnetwork/request-client.js"
 
 import { ConnectWalletProps } from '../@types/App';
 import { faSignOutAlt, faUserCircle, faChevronDown, faChevronUp, faCopy } from '@fortawesome/free-solid-svg-icons';
@@ -31,28 +37,48 @@ const ConnectWebWallet: React.FC<ConnectWalletProps> = ({ chain }) => {
         setWalletDetails({ address: keypair.publicKey(), chain: 'Stellar', username: '' });
     };
 
-    // Create an instance of RequestClient 
-    const requestClient = new RequestClient({ 
-             requestNetworkApiUrl: 'https://api.requestnetwork.io/v1/', 
-             network:              'mainnet' 
-         }); 
-    
-    const fetchData = async () => { 
-        try { 
-            const data = await requestClient.getData('your-request-id'); 
-            console.log(data); 
-        } catch (error) { 
-            console.error('Error fetching data:', error); 
-        } 
-    };
 
-    useEffect(() => {
-        fetchData();
-        if (connected && publicKey && chain === 'solana') {
-            setWalletDetails({ address: publicKey.toBase58(), chain: 'Solana', username: '' });
-        } else if (!connected && chain === 'solana') {
-            toast.error('No Solana wallet found. Please install Phantom Wallet.');
+    
+  const initConnection = () => {
+      try{
+            let WEB3_PROVIDER_URL= "https://your-web3-provider-url";
+            let requestProvider: any;
+            // if (WEB3_PROVIDER_URL === undefined) {
+              requestProvider = new providers.Web3Provider(window.ethereum);
+            // } else {
+            //   requestProvider = new providers.JsonRpcProvider(WEB3_PROVIDER_URL);
+            // }
+            
+            const web3SignatureProvider: any = new Web3SignatureProvider(requestProvider);
+            console.log("web3SignatureProvider", web3SignatureProvider);
+
+            const requestClient = new RequestNetwork({
+                                            nodeConnectionConfig: { 
+                                            baseURL: "https://sepolia.gateway.request.network/",
+                                            },
+                                            signatureProvider: web3SignatureProvider,
+                                        });
+              
+
+       
+        } catch(e){
+             console.log("e", e)
         }
+    } 
+
+
+
+
+
+
+    useEffect(() => {  
+      if (connected && publicKey && chain === 'solana') {
+        setWalletDetails({ address: publicKey.toBase58(), chain: 'Solana', username: '' });
+      } else if (!connected && chain === 'solana') {
+        // toast.error('No Solana wallet found. Please install Phantom Wallet.');
+      }
+      initConnection();
+
     }, [connected, publicKey, chain]);
 
     const handleLogout = () => {
